@@ -106,7 +106,6 @@ docs/nlesc.css: reveal.js/dist/theme/nlesc.css | docs
 docs/index.html: $(source) Makefile | docs
 	pandoc -t revealjs -s -o ./docs/index.html \
 		$(source) --mathjax \
-		-V theme=nlesc.css \
 		--slide-level=2
 
 .PHONY: all clean watch pages watch-pandoc watch-reveal
