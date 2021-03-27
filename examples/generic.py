@@ -7,5 +7,5 @@ def word_lengths(words: Iterable[str]) -> Iterable[int]:
 
 words = "The quick brown fox jumps over the lazy dog".split()
 print(word_lengths(words))
-print(word_lengths(w.upper() for w in words))
+print(word_lengths(w.upper() for w in words))  # passes
 # ~\~ end

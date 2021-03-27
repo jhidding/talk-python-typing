@@ -14,5 +14,5 @@ def add(a: T, b: T) -> T:
 
 print(add("Hello, ", "World!"))
 print(add(3, 4))
-print(add("hello", 5))
+print(add("hello", 5)) #fails
 # ~\~ end

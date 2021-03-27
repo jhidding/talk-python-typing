@@ -1,5 +1,5 @@
 # ~\~ language=Python filename=examples/integrator.py
-# ~\~ begin <<README.md|examples/integrator.py>>[0]
+# ~\~ begin <<README.md|pendulum>>[0]
 from __future__ import annotations
 from dataclasses import dataclass
 from typing import Protocol, TypeVar, Callable, Iterable, Generic
@@ -10,11 +10,13 @@ Vector = TypeVar("Vector", bound="VectorProtocol")
 class VectorProtocol(Protocol):
     def __add__(self: Vector, other: Vector) -> Vector: ...
     def __rmul__(self: Vector, other: float) -> Vector: ...
-
+# ~\~ end
+# ~\~ begin <<README.md|pendulum>>[1]
 class HamiltonianSystem(Protocol[Vector]):
     def momentumEquation(self, s: State[Vector]) -> Vector: ...
     def positionEquation(self, s: State[Vector]) -> Vector: ...
-
+# ~\~ end
+# ~\~ begin <<README.md|pendulum>>[2]
 @dataclass
 class State(Generic[Vector]):
     time: float
@@ -32,7 +34,8 @@ class State(Generic[Vector]):
     def wait(self, dt: float) -> State[Vector]:
         self.time += dt
         return self
-
+# ~\~ end
+# ~\~ begin <<README.md|pendulum>>[3]
 Solver = Callable[[HamiltonianSystem[Vector], State[Vector]], State[Vector]]
 Stepper = Callable[[State[Vector]], State[Vector]]
 HaltingCondition = Callable[[State[Vector]], bool]
