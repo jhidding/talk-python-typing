@@ -106,7 +106,6 @@ docs/nlesc.css: reveal.js/dist/theme/nlesc.css | docs
 docs/index.html: $(source) Makefile | docs
 	pandoc -t revealjs -s -o ./docs/index.html \
 		$(source) --mathjax \
-		-V revealjs-url=. \
 		-V theme=nlesc.css \
 		--slide-level=2
 
