@@ -93,8 +93,6 @@ add("Hello, ", "World!")
 add("Hello, ", 42)
 ```
 
-# Types in Python
-
 ---
 
 We have *duck* typing...
@@ -114,17 +112,6 @@ TypeError: can only concatenate str (not "int") to str
 
 - The `add()` function is not at fault here! 
 
-## Fix add?
-
-``` {.python}
-def add(a, b):
-    """Tries to add a and b, returns None otherwise."""
-    try:
-        return a + b
-    except TypeError:
-        return None
-```
-
 ## Religion
 To add a bit of religion to the existing canon:
 
@@ -134,11 +121,20 @@ and
 
 > Keep the logic in a code free of boiler plate
 
-::: {.notes}
-We took an important function implementing the core inner logic of an application and dirtied it with a `try/except` block. This makes the code less readable. This is also why we love NumPy. Typing in Python lets us express the type constraints of our code statically, increasing safety, robustness and readability in one fell swoop!
+## Growing complexity
+- From the people at [DropBox](https://dropbox.tech/application/our-journey-to-type-checking-4-million-lines-of-python)
+    - Can this function return `None`?
+    - What is this items argument supposed to be?
+    - What is the type of the `id` attribute: is it `int`, `str`, or perhaps some custom type?
+    - Does this argument need to be a `list`, or can I give a `tuple` or a `set`?
 
-Important PEPs: 484, 526, 544
-:::
+## Recap
+- Find bugs
+- Easier refactoring
+- Type checking is faster than unit testing
+- Great support in IDEs
+
+# Types in Python
 
 ## PEP 484
 ::: {.notes}

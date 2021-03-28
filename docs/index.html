@@ -207,11 +207,6 @@
 <section id="so-what" class="slide level2">
 <h2>So what?</h2>
 <div class="sourceCode" id="repl"><pre class="sourceCode python eval"><code class="sourceCode python"><span id="repl-1"><a href="#repl-1" aria-hidden="true" tabindex="-1"></a>add(<span class="st">&quot;Hello, &quot;</span>, <span class="dv">42</span>)</span></code></pre></div>
-</section></section>
-<section>
-<section id="types-in-python" class="title-slide slide level1">
-<h1>Types in Python</h1>
-
 </section>
 <section class="slide level2">
 
@@ -230,15 +225,6 @@ TypeError: can only concatenate str (not &quot;int&quot;) to str</code></pre>
 <li>The <code>add()</code> function is not at fault here!</li>
 </ul>
 </section>
-<section id="fix-add" class="slide level2">
-<h2>Fix add?</h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> add(a, b):</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Tries to add a and b, returns None otherwise.&quot;&quot;&quot;</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> a <span class="op">+</span> b</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">TypeError</span>:</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span></span></code></pre></div>
-</section>
 <section id="religion" class="slide level2">
 <h2>Religion</h2>
 <p>To add a bit of religion to the existing canon:</p>
@@ -249,18 +235,40 @@ TypeError: can only concatenate str (not &quot;int&quot;) to str</code></pre>
 <blockquote>
 <p>Keep the logic in a code free of boiler plate</p>
 </blockquote>
-<aside class="notes">
-<p>We took an important function implementing the core inner logic of an application and dirtied it with a <code>try/except</code> block. This makes the code less readable. This is also why we love NumPy. Typing in Python lets us express the type constraints of our code statically, increasing safety, robustness and readability in one fell swoop!</p>
-<p>Important PEPs: 484, 526, 544</p>
-</aside>
+</section>
+<section id="growing-complexity" class="slide level2">
+<h2>Growing complexity</h2>
+<ul>
+<li>From the people at <a href="https://dropbox.tech/application/our-journey-to-type-checking-4-million-lines-of-python">DropBox</a>
+<ul>
+<li>Can this function return <code>None</code>?</li>
+<li>What is this items argument supposed to be?</li>
+<li>What is the type of the <code>id</code> attribute: is it <code>int</code>, <code>str</code>, or perhaps some custom type?</li>
+<li>Does this argument need to be a <code>list</code>, or can I give a <code>tuple</code> or a <code>set</code>?</li>
+</ul></li>
+</ul>
+</section>
+<section id="recap" class="slide level2">
+<h2>Recap</h2>
+<ul>
+<li>Find bugs</li>
+<li>Easier refactoring</li>
+<li>Type checking is faster than unit testing</li>
+<li>Great support in IDEs</li>
+</ul>
+</section></section>
+<section>
+<section id="types-in-python" class="title-slide slide level1">
+<h1>Types in Python</h1>
+
 </section>
 <section id="pep-484" class="slide level2">
 <h2>PEP 484</h2>
 <aside class="notes">
 <p>Python 3.5 added support for type hints. The idea of this feature is that types only give hints about the correct arguments to a function.</p>
 </aside>
-<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> greeting(name: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">&quot;Hello, &quot;</span> <span class="op">+</span> name</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> greeting(name: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">&quot;Hello, &quot;</span> <span class="op">+</span> name</span></code></pre></div>
 <ul>
 <li>We can now annotate our <code>add()</code> function:</li>
 </ul>
@@ -276,110 +284,110 @@ TypeError: can only concatenate str (not &quot;int&quot;) to str</code></pre>
 </section>
 <section id="product-types" class="slide level2">
 <h2>Product types</h2>
-<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> dataclasses <span class="im">import</span> dataclass</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="at">@dataclass</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Point:</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    x: <span class="bu">float</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    y: <span class="bu">float</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> dataclasses <span class="im">import</span> dataclass</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="at">@dataclass</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Point:</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    x: <span class="bu">float</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    y: <span class="bu">float</span></span></code></pre></div>
 <p>or</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Tuple</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Python &lt;=3.8</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>Point <span class="op">=</span> Tuple[<span class="bu">float</span>, <span class="bu">float</span>]</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Python &gt;=3.9 (old style will give warning)</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>Point <span class="op">=</span> <span class="bu">tuple</span>[<span class="bu">float</span>, <span class="bu">float</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Tuple</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Python &lt;=3.8</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>Point <span class="op">=</span> Tuple[<span class="bu">float</span>, <span class="bu">float</span>]</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Python &gt;=3.9 (old style will give warning)</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>Point <span class="op">=</span> <span class="bu">tuple</span>[<span class="bu">float</span>, <span class="bu">float</span>]</span></code></pre></div>
 </section>
 <section id="sum-types" class="slide level2">
 <h2>Sum types</h2>
-<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Union</span>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Union</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>Number <span class="op">=</span> Union[<span class="bu">int</span>, <span class="bu">float</span>, <span class="bu">complex</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Optional</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>Number <span class="op">=</span> Union[<span class="bu">int</span>, <span class="bu">float</span>, <span class="bu">complex</span>]</span></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Optional</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>x: Optional[<span class="bu">int</span>] <span class="op">=</span> <span class="va">None</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> x <span class="kw">is</span> <span class="va">None</span>:</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> <span class="dv">10</span></span></code></pre></div>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>x: Optional[<span class="bu">int</span>] <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> x <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> <span class="dv">10</span></span></code></pre></div>
 </section>
 <section id="map-types" class="slide level2">
 <h2>Map types</h2>
-<div class="sourceCode" id="cb9" data-file="examples/float_format.py"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Callable</span>
+<div class="sourceCode" id="cb8" data-file="examples/float_format.py"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Callable</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>FloatFormatter <span class="op">=</span> Callable[[<span class="bu">float</span>], <span class="bu">str</span>]</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>my_format: FloatFormatter <span class="op">=</span> <span class="st">&quot;</span><span class="sc">{:.4}</span><span class="st">&quot;</span>.<span class="bu">format</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Mapping</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>FloatFormatter <span class="op">=</span> Callable[[<span class="bu">float</span>], <span class="bu">str</span>]</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>Settings <span class="op">=</span> Mapping[<span class="bu">str</span>, <span class="bu">float</span>]</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>my_format: FloatFormatter <span class="op">=</span> <span class="st">&quot;</span><span class="sc">{:.4}</span><span class="st">&quot;</span>.<span class="bu">format</span></span></code></pre></div>
-<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Mapping</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>Settings <span class="op">=</span> Mapping[<span class="bu">str</span>, <span class="bu">float</span>]</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>settings: Settings <span class="op">=</span> {</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;c&quot;</span>: <span class="fl">3e8</span>,</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;h_bar&quot;</span>: <span class="fl">1.05e-34</span>,</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;G&quot;</span>: <span class="fl">6.7e-11</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>settings: Settings <span class="op">=</span> {</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;c&quot;</span>: <span class="fl">3e8</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;h_bar&quot;</span>: <span class="fl">1.05e-34</span>,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;G&quot;</span>: <span class="fl">6.7e-11</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </section>
 <section id="parametric-types" class="slide level2">
 <h2>Parametric types</h2>
 <p>Many data structures have type arguments. The following syntax only works in Python ≥ 3.9.</p>
-<div class="sourceCode" id="cb11" data-file="examples/parametric.py"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> word_lengths(words: <span class="bu">list</span>[<span class="bu">str</span>]) <span class="op">-&gt;</span> <span class="bu">list</span>[<span class="bu">int</span>]:</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [<span class="bu">len</span>(w) <span class="cf">for</span> w <span class="kw">in</span> words]</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>words <span class="op">=</span> <span class="st">&quot;The quick brown fox jumps over the lazy dog&quot;</span>.split()</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(word_lengths(words))</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(word_lengths(w.upper() <span class="cf">for</span> w <span class="kw">in</span> words))  <span class="co"># fails</span></span></code></pre></div>
+<div class="sourceCode" id="cb10" data-file="examples/parametric.py"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> word_lengths(words: <span class="bu">list</span>[<span class="bu">str</span>]) <span class="op">-&gt;</span> <span class="bu">list</span>[<span class="bu">int</span>]:</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [<span class="bu">len</span>(w) <span class="cf">for</span> w <span class="kw">in</span> words]</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>words <span class="op">=</span> <span class="st">&quot;The quick brown fox jumps over the lazy dog&quot;</span>.split()</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(word_lengths(words))</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(word_lengths(w.upper() <span class="cf">for</span> w <span class="kw">in</span> words))  <span class="co"># fails</span></span></code></pre></div>
 </section>
 <section id="protocol-types" class="slide level2">
 <h2>Protocol types</h2>
-<div class="sourceCode" id="cb12" data-file="examples/generic.py"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> (Iterable)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> word_lengths(words: Iterable[<span class="bu">str</span>]) <span class="op">-&gt;</span> Iterable[<span class="bu">int</span>]:</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (<span class="bu">len</span>(w) <span class="cf">for</span> w <span class="kw">in</span> words)</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>words <span class="op">=</span> <span class="st">&quot;The quick brown fox jumps over the lazy dog&quot;</span>.split()</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(word_lengths(words))</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(word_lengths(w.upper() <span class="cf">for</span> w <span class="kw">in</span> words))  <span class="co"># passes</span></span></code></pre></div>
+<div class="sourceCode" id="cb11" data-file="examples/generic.py"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> (Iterable)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> word_lengths(words: Iterable[<span class="bu">str</span>]) <span class="op">-&gt;</span> Iterable[<span class="bu">int</span>]:</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (<span class="bu">len</span>(w) <span class="cf">for</span> w <span class="kw">in</span> words)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>words <span class="op">=</span> <span class="st">&quot;The quick brown fox jumps over the lazy dog&quot;</span>.split()</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(word_lengths(words))</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(word_lengths(w.upper() <span class="cf">for</span> w <span class="kw">in</span> words))  <span class="co"># passes</span></span></code></pre></div>
 </section>
 <section id="defining-your-own-protocols" class="slide level2">
 <h2>Defining your own protocols</h2>
-<div class="sourceCode" id="cb13" data-file="examples/addable.py"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Protocol, TypeVar</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>TAdd <span class="op">=</span> TypeVar(<span class="st">&quot;TAdd&quot;</span>, bound<span class="op">=</span><span class="st">&quot;Addable&quot;</span>)</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Addable(Protocol):</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__add__</span>(<span class="va">self</span>: TAdd, other: TAdd) <span class="op">-&gt;</span> TAdd:</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>        ...</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>T <span class="op">=</span> TypeVar(<span class="st">&quot;T&quot;</span>, bound<span class="op">=</span><span class="st">&quot;Addable&quot;</span>)</span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> add(a: T, b: T) <span class="op">-&gt;</span> T:</span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> a <span class="op">+</span> b</span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(add(<span class="st">&quot;Hello, &quot;</span>, <span class="st">&quot;World!&quot;</span>))</span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(add(<span class="dv">3</span>, <span class="dv">4</span>))</span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(add(<span class="st">&quot;hello&quot;</span>, <span class="dv">5</span>)) <span class="co">#fails</span></span></code></pre></div>
+<div class="sourceCode" id="cb12" data-file="examples/addable.py"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Protocol, TypeVar</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>TAdd <span class="op">=</span> TypeVar(<span class="st">&quot;TAdd&quot;</span>, bound<span class="op">=</span><span class="st">&quot;Addable&quot;</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Addable(Protocol):</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__add__</span>(<span class="va">self</span>: TAdd, other: TAdd) <span class="op">-&gt;</span> TAdd:</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>        ...</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>T <span class="op">=</span> TypeVar(<span class="st">&quot;T&quot;</span>, bound<span class="op">=</span><span class="st">&quot;Addable&quot;</span>)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> add(a: T, b: T) <span class="op">-&gt;</span> T:</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> a <span class="op">+</span> b</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(add(<span class="st">&quot;Hello, &quot;</span>, <span class="st">&quot;World!&quot;</span>))</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(add(<span class="dv">3</span>, <span class="dv">4</span>))</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(add(<span class="st">&quot;hello&quot;</span>, <span class="dv">5</span>)) <span class="co">#fails</span></span></code></pre></div>
 </section>
 <section id="data-classes" class="slide level2">
 <h2>Data classes</h2>
-<div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> dataclasses <span class="im">import</span> dataclass</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="at">@dataclass</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Point:</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    x: <span class="bu">float</span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    y: <span class="bu">float</span></span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> dataclasses <span class="im">import</span> dataclass</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="at">@dataclass</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Point:</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    x: <span class="bu">float</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    y: <span class="bu">float</span></span></code></pre></div>
 </section>
 <section id="generic-types" class="slide level2">
 <h2>Generic types</h2>
-<div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> (Generic, TypeVar)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>T <span class="op">=</span> TypeVar(<span class="st">&quot;T&quot;</span>)</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="at">@dataclass</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Point(Generic[T]):</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    x: T</span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    y: T</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> (Generic, TypeVar)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>T <span class="op">=</span> TypeVar(<span class="st">&quot;T&quot;</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="at">@dataclass</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Point(Generic[T]):</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    x: T</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    y: T</span></code></pre></div>
 </section>
 <section id="forward-type-references" class="slide level2">
 <h2>Forward type references</h2>
-<div class="sourceCode" id="cb16"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> __future__ <span class="im">import</span> annotations</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> __future__ <span class="im">import</span> annotations</span></code></pre></div>
 </section>
 <section id="recursive-types" class="slide level2">
 <h2>Recursive types</h2>
@@ -411,13 +419,13 @@ TypeError: can only concatenate str (not &quot;int&quot;) to str</code></pre>
 <h2>Setting up MyPy</h2>
 <ul>
 <li><p>Example <code>setup.cfg</code></p>
-<div class="sourceCode" id="cb17" data-file="setup.cfg"><pre class="sourceCode ini"><code class="sourceCode ini"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[mypy]</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="dt">python_version </span><span class="ot">=</span><span class="st"> </span><span class="fl">3.9</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="dt">warn_return_any </span><span class="ot">=</span><span class="st"> </span><span class="kw">True</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="dt">warn_unused_configs </span><span class="ot">=</span><span class="st"> </span><span class="kw">True</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="kw">[mypy-numpy]</span></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="dt">ignore_missing_imports </span><span class="ot">=</span><span class="st"> </span><span class="kw">True</span></span></code></pre></div></li>
+<div class="sourceCode" id="cb16" data-file="setup.cfg"><pre class="sourceCode ini"><code class="sourceCode ini"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[mypy]</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="dt">python_version </span><span class="ot">=</span><span class="st"> </span><span class="fl">3.9</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="dt">warn_return_any </span><span class="ot">=</span><span class="st"> </span><span class="kw">True</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="dt">warn_unused_configs </span><span class="ot">=</span><span class="st"> </span><span class="kw">True</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="kw">[mypy-numpy]</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="dt">ignore_missing_imports </span><span class="ot">=</span><span class="st"> </span><span class="kw">True</span></span></code></pre></div></li>
 <li><p>Use <code>pytest-mypy</code> to integrate with <code>pytest</code>.</p></li>
 </ul>
 </section></section>
